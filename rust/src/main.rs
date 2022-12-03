@@ -5,6 +5,7 @@ mod io;
 mod calories;
 mod game;
 mod packing;
+mod camp;
 
 mod challenge {
     use super::io as io;
@@ -41,6 +42,18 @@ mod challenge {
         println!("{:?}", res);
     }
 
+    fn challenge_7() {
+        let data = io::input_as_assignment(4);
+        let res : usize = data.iter().filter(|&r| r.contains()).count();
+        println!("{:?}", res);
+    }
+
+    fn challenge_8() {
+        let data = io::input_as_assignment(4);
+        let res : usize = data.iter().filter(|&r| r.overlap()).count();
+        println!("{:?}", res);
+    }
+
    
     pub fn challenge(num : u8) {
         match num {
@@ -50,6 +63,8 @@ mod challenge {
             4 => challenge_4(),
             5 => challenge_5(),
             6 => challenge_6(),
+            7 => challenge_7(),
+            8 => challenge_8(),
             _ => () 
         }
     }

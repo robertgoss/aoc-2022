@@ -5,6 +5,7 @@ use std::io::BufRead;
 use crate::calories;
 use crate::game;
 use crate::packing;
+use crate::camp;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -39,4 +40,9 @@ pub fn input_as_groups(day: i8) -> Vec<packing::Group> {
     ).collect()
 }
 
+pub fn input_as_assignment(day: i8) -> Vec<camp::AssignmentPair> {
+    input_as_lines(day).iter().filter_map(
+        |line| camp::AssignmentPair::from_line(line)
+    ).collect()
+}
 
