@@ -6,6 +6,7 @@ mod calories;
 mod game;
 mod packing;
 mod camp;
+mod crates;
 
 mod challenge {
     use super::io as io;
@@ -54,6 +55,18 @@ mod challenge {
         println!("{:?}", res);
     }
 
+    fn challenge_9() {
+        let (mut data, moves) = io::input_as_crates(5);
+        data.simulate(&moves, false);
+        println!("{}", data.tops());
+    }
+
+    fn challenge_10() {
+        let (mut data, moves) = io::input_as_crates(5);
+        data.simulate(&moves, true);
+        println!("{}", data.tops());
+    }
+
    
     pub fn challenge(num : u8) {
         match num {
@@ -65,6 +78,8 @@ mod challenge {
             6 => challenge_6(),
             7 => challenge_7(),
             8 => challenge_8(),
+            9 => challenge_9(),
+            10 => challenge_10(),
             _ => () 
         }
     }

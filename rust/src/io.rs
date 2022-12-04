@@ -6,6 +6,7 @@ use crate::calories;
 use crate::game;
 use crate::packing;
 use crate::camp;
+use crate::crates;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -44,5 +45,20 @@ pub fn input_as_assignment(day: i8) -> Vec<camp::AssignmentPair> {
     input_as_lines(day).iter().filter_map(
         |line| camp::AssignmentPair::from_line(line)
     ).collect()
+}
+
+pub fn input_as_crates(day: i8) -> (crates::Crates, Vec<crates::Move>) {
+    let all_lines = input_as_lines(day);
+    let init_lines : Vec<&String> = all_lines.iter().take_while(
+        |l| l.len() > 0
+    ).collect();
+    let rest_lines : Vec<&String> = all_lines.iter().skip_while(
+        |l| l.len() > 0
+    ).skip(1).collect();
+    let init = crates::Crates::from_lines(&init_lines).unwrap();
+    let moves = rest_lines.iter().filter_map(
+        |line| crates::Move::from_line(line)
+    ).collect();
+    (init, moves)
 }
 
