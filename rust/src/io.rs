@@ -17,6 +17,10 @@ pub fn input_as_lines(day: i8) -> Vec<String> {
     ).collect()
 }
 
+pub fn input_as_line(day: i8) -> String {
+    input_as_lines(day).into_iter().next().unwrap()
+}
+
 pub fn input_as_elfs(day: i8) -> calories::Elfs {
     calories::Elfs::from_lines(&input_as_lines(day))
 }

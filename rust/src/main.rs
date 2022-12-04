@@ -7,6 +7,7 @@ mod game;
 mod packing;
 mod camp;
 mod crates;
+mod signal;
 
 mod challenge {
     use super::io as io;
@@ -67,6 +68,18 @@ mod challenge {
         println!("{}", data.tops());
     }
 
+    fn challenge_11() {
+        let data = io::input_as_line(6);
+        let res = crate::signal::start_of_packet(&data, 4);
+        println!("{}", res);
+    }
+
+    fn challenge_12() {
+        let data = io::input_as_line(6);
+        let res = crate::signal::start_of_packet(&data, 14);
+        println!("{}", res);
+    }
+
    
     pub fn challenge(num : u8) {
         match num {
@@ -80,6 +93,8 @@ mod challenge {
             8 => challenge_8(),
             9 => challenge_9(),
             10 => challenge_10(),
+            11 => challenge_11(),
+            12 => challenge_12(),
             _ => () 
         }
     }
