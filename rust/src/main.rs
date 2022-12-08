@@ -10,6 +10,7 @@ mod crates;
 mod signal;
 mod files;
 mod trees;
+mod rope;
 
 mod challenge {
     use super::io as io;
@@ -108,6 +109,18 @@ mod challenge {
         let res = data.scenic_max();
         println!("{}", res);
     }
+
+    fn challenge_17() {
+        let data = io::input_as_directions(9);
+        let res = data.simulate(2).len();
+        println!("{}", res);
+    }
+
+    fn challenge_18() {
+        let data = io::input_as_directions(9);
+        let res = data.simulate(10).len();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -127,6 +140,8 @@ mod challenge {
             14 => challenge_14(),
             15 => challenge_15(),
             16 => challenge_16(),
+            17 => challenge_17(),
+            18 => challenge_18(),
             _ => () 
         }
     }
