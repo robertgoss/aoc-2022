@@ -8,6 +8,7 @@ mod packing;
 mod camp;
 mod crates;
 mod signal;
+mod files;
 
 mod challenge {
     use super::io as io;
@@ -80,6 +81,21 @@ mod challenge {
         println!("{}", res);
     }
 
+    fn challenge_13() {
+        let data = io::input_as_commands(7);
+        let files = data.filesystem();
+        let res = files.total(100000);
+        println!("{}", res);
+    }
+
+    fn challenge_14() {
+        let data = io::input_as_commands(7);
+        let files = data.filesystem();
+        let size = files.size();
+        let res = files.smallest_dir(size - 40000000).unwrap();
+        println!("{}", res);
+    }
+
    
     pub fn challenge(num : u8) {
         match num {
@@ -95,6 +111,8 @@ mod challenge {
             10 => challenge_10(),
             11 => challenge_11(),
             12 => challenge_12(),
+            13 => challenge_13(),
+            14 => challenge_14(),
             _ => () 
         }
     }

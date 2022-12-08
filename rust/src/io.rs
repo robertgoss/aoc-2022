@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::fs::{read_to_string, File};
 use std::io::BufReader;
 use std::io::BufRead;
 
@@ -7,6 +7,7 @@ use crate::game;
 use crate::packing;
 use crate::camp;
 use crate::crates;
+use crate::files;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -15,6 +16,11 @@ pub fn input_as_lines(day: i8) -> Vec<String> {
     reader.lines().map(
         |s| s.expect("Read failure")
     ).collect()
+}
+
+pub fn input_as_string(day: i8) -> String {
+    let filename = format!("../data/day-{}.txt", day);
+    read_to_string(filename).expect("Read failure")
 }
 
 pub fn input_as_line(day: i8) -> String {
@@ -31,6 +37,10 @@ pub fn input_as_guide(day: i8) -> game::Guide {
 
 pub fn input_as_game(day: i8) -> game::Game {
     game::Game::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_commands(day : i8) -> files::Commands {
+    files::Commands::from_string(&input_as_string(day))
 }
 
 pub fn input_as_rucksack(day: i8) -> Vec<packing::Rucksack> {
