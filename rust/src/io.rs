@@ -8,6 +8,7 @@ use crate::packing;
 use crate::camp;
 use crate::crates;
 use crate::files;
+use crate::trees;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -37,6 +38,10 @@ pub fn input_as_guide(day: i8) -> game::Guide {
 
 pub fn input_as_game(day: i8) -> game::Game {
     game::Game::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_forest(day: i8) -> trees::Forest {
+    trees::Forest::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_commands(day : i8) -> files::Commands {

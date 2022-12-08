@@ -9,6 +9,7 @@ mod camp;
 mod crates;
 mod signal;
 mod files;
+mod trees;
 
 mod challenge {
     use super::io as io;
@@ -96,6 +97,17 @@ mod challenge {
         println!("{}", res);
     }
 
+    fn challenge_15() {
+        let data = io::input_as_forest(8);
+        let res = data.count_visible();
+        println!("{}", res);
+    }
+
+    fn challenge_16() {
+        let data = io::input_as_forest(8);
+        let res = data.scenic_max();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -113,6 +125,8 @@ mod challenge {
             12 => challenge_12(),
             13 => challenge_13(),
             14 => challenge_14(),
+            15 => challenge_15(),
+            16 => challenge_16(),
             _ => () 
         }
     }
