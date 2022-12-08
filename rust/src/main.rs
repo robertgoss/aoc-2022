@@ -11,6 +11,7 @@ mod signal;
 mod files;
 mod trees;
 mod rope;
+mod crt;
 
 mod challenge {
     use super::io as io;
@@ -121,6 +122,19 @@ mod challenge {
         let res = data.simulate(10).len();
         println!("{}", res);
     }
+
+    fn challenge_19() {
+        let data = io::input_as_code(10);
+        let signals = data.signals();
+        let res = signals[19] + signals[59] + signals[99] + signals[139] + signals[179] + signals[219];
+        println!("{}", res);
+    }
+
+    fn challenge_20() {
+        let data = io::input_as_code(10);
+        let res = data.display();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -142,6 +156,8 @@ mod challenge {
             16 => challenge_16(),
             17 => challenge_17(),
             18 => challenge_18(),
+            19 => challenge_19(),
+            20 => challenge_20(),
             _ => () 
         }
     }
