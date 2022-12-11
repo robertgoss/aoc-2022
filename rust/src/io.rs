@@ -12,6 +12,7 @@ use crate::trees;
 use crate::rope;
 use crate::crt;
 use crate::monkey;
+use crate::heights;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -61,6 +62,10 @@ pub fn input_as_directions(day : i8) -> rope::Directions {
 
 pub fn input_as_code(day : i8) -> crt::CPU {
     crt::CPU::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_heights(day : i8) -> heights::HeightMap {
+    heights::HeightMap::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_rucksack(day: i8) -> Vec<packing::Rucksack> {

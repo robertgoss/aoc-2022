@@ -13,6 +13,7 @@ mod trees;
 mod rope;
 mod crt;
 mod monkey;
+mod heights;
 
 mod challenge {
     use super::io as io;
@@ -150,6 +151,18 @@ mod challenge {
         let res = data.monkey_buisness();
         println!("{}", res);
     }
+
+    fn challenge_23() {
+        let data = io::input_as_heights(12);
+        let res = data.distance();
+        println!("{}", res);
+    }
+
+    fn challenge_24() {
+        let data = io::input_as_heights(12);
+        let res = data.distance_start();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -175,6 +188,8 @@ mod challenge {
             20 => challenge_20(),
             21 => challenge_21(),
             22 => challenge_22(),
+            23 => challenge_23(),
+            24 => challenge_24(),
             _ => () 
         }
     }
