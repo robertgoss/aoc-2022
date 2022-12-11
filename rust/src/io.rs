@@ -11,6 +11,7 @@ use crate::files;
 use crate::trees;
 use crate::rope;
 use crate::crt;
+use crate::monkey;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -48,6 +49,10 @@ pub fn input_as_forest(day: i8) -> trees::Forest {
 
 pub fn input_as_commands(day : i8) -> files::Commands {
     files::Commands::from_string(&input_as_string(day))
+}
+
+pub fn input_as_monkeys(day : i8) -> monkey::Monkeys {
+    monkey::Monkeys::from_string(&input_as_string(day))
 }
 
 pub fn input_as_directions(day : i8) -> rope::Directions {

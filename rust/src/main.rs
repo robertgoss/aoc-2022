@@ -12,6 +12,7 @@ mod files;
 mod trees;
 mod rope;
 mod crt;
+mod monkey;
 
 mod challenge {
     use super::io as io;
@@ -135,6 +136,20 @@ mod challenge {
         let res = data.display();
         println!("{}", res);
     }
+
+    fn challenge_21() {
+        let mut data = io::input_as_monkeys(11);
+        data.simulate(20, true);
+        let res = data.monkey_buisness();
+        println!("{}", res);
+    }
+
+    fn challenge_22() {
+        let mut data = io::input_as_monkeys(11);
+        data.simulate(10000, false);
+        let res = data.monkey_buisness();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -158,6 +173,8 @@ mod challenge {
             18 => challenge_18(),
             19 => challenge_19(),
             20 => challenge_20(),
+            21 => challenge_21(),
+            22 => challenge_22(),
             _ => () 
         }
     }
