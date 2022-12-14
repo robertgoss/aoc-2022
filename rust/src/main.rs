@@ -1,5 +1,8 @@
 #![feature(iter_array_chunks)]
 
+extern crate pest;
+#[macro_use]
+extern crate pest_derive;
 
 mod io;
 mod calories;
@@ -14,8 +17,11 @@ mod rope;
 mod crt;
 mod monkey;
 mod heights;
+mod packets;
 
 mod challenge {
+    use crate::packets::Packet;
+
     use super::io as io;
 
     fn challenge_1() {
@@ -163,6 +169,26 @@ mod challenge {
         let res = data.distance_start();
         println!("{}", res);
     }
+
+    fn challenge_25() {
+        let data = io::input_as_packet_pairs(13);
+        let res : usize = data.iter().enumerate().filter_map(
+            |(i, pair)| if pair.ordered() { Some(i+1) } else { None }
+        ).sum();
+        println!("{}", res);
+    }
+
+    fn challenge_26() {
+        let (div1, div2) = Packet::dividers();
+        let mut data = io::input_as_packets(13);
+        data.push(div1.clone());
+        data.push(div2.clone());
+        data.sort();
+        let res : usize = data.iter().enumerate().filter_map(
+            |(i,p)| if *p==div1 || *p==div2 { Some(i+1) } else { None }
+        ).product();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -190,6 +216,8 @@ mod challenge {
             22 => challenge_22(),
             23 => challenge_23(),
             24 => challenge_24(),
+            25 => challenge_25(),
+            26 => challenge_26(),
             _ => () 
         }
     }
