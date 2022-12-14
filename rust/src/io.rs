@@ -14,6 +14,7 @@ use crate::crt;
 use crate::monkey;
 use crate::heights;
 use crate::packets;
+use crate::sand;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -80,6 +81,10 @@ pub fn input_as_packets(day : i8) -> Vec<packets::Packet> {
 
 pub fn input_as_heights(day : i8) -> heights::HeightMap {
     heights::HeightMap::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_cave(day : i8) -> sand::Cave {
+    sand::Cave::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_rucksack(day: i8) -> Vec<packing::Rucksack> {

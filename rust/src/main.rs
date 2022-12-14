@@ -18,6 +18,7 @@ mod crt;
 mod monkey;
 mod heights;
 mod packets;
+mod sand;
 
 mod challenge {
     use crate::packets::Packet;
@@ -189,6 +190,18 @@ mod challenge {
         ).product();
         println!("{}", res);
     }
+
+    fn challenge_27() {
+        let mut data = io::input_as_cave(14);
+        let res = data.pour_void();
+        println!("{}", res);
+    }
+
+    fn challenge_28() {
+        let mut data = io::input_as_cave(14);
+        let res = data.pour_wall();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -218,6 +231,8 @@ mod challenge {
             24 => challenge_24(),
             25 => challenge_25(),
             26 => challenge_26(),
+            27 => challenge_27(),
+            28 => challenge_28(),
             _ => () 
         }
     }
