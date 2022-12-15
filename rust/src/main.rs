@@ -1,4 +1,5 @@
 #![feature(iter_array_chunks)]
+#![feature(btree_drain_filter)]
 
 extern crate pest;
 #[macro_use]
@@ -19,6 +20,7 @@ mod monkey;
 mod heights;
 mod packets;
 mod sand;
+mod sensors;
 
 mod challenge {
     use crate::packets::Packet;
@@ -202,6 +204,19 @@ mod challenge {
         let res = data.pour_wall();
         println!("{}", res);
     }
+
+    fn challenge_29() {
+        let data = io::input_as_sensors(15);
+        let res = data.no_becons_row(2000000);
+        println!("{}", res);
+    }
+
+    fn challenge_30() {
+        let data = io::input_as_sensors(15);
+        let pt = data.find_beacon(0, 4000000, 0, 4000000).unwrap();
+        let res = pt.0 * 4000000 + pt.1;
+        println!("{:?}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -233,6 +248,8 @@ mod challenge {
             26 => challenge_26(),
             27 => challenge_27(),
             28 => challenge_28(),
+            29 => challenge_29(),
+            30 => challenge_30(),
             _ => () 
         }
     }
