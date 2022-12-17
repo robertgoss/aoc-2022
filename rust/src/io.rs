@@ -2,7 +2,7 @@ use std::fs::{read_to_string, File};
 use std::io::BufReader;
 use std::io::BufRead;
 
-use crate::calories;
+use crate::{calories, tetris};
 use crate::game;
 use crate::packing;
 use crate::camp;
@@ -66,6 +66,10 @@ pub fn input_as_directions(day : i8) -> rope::Directions {
 
 pub fn input_as_code(day : i8) -> crt::CPU {
     crt::CPU::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_jets(day : i8) -> tetris::Jets {
+    tetris::Jets::from_line(&input_as_line(day))
 }
 
 pub fn input_as_sensors(day : i8) -> sensors::Sensors {

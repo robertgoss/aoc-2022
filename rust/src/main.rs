@@ -22,9 +22,11 @@ mod packets;
 mod sand;
 mod sensors;
 mod pressure;
+mod tetris;
 
 mod challenge {
     use crate::packets::Packet;
+    use crate::tetris::Game;
 
     use super::io as io;
 
@@ -230,6 +232,14 @@ mod challenge {
         let res = data.maximum_pressure_dual();
         println!("{}", res);
     }
+
+    fn challenge_33() {
+        let mut data = io::input_as_jets(17);
+        let mut game = Game::new();
+        game.simulate(2022, &mut data);
+        let res = game.height();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -265,6 +275,7 @@ mod challenge {
             30 => challenge_30(),
             31 => challenge_31(),
             32 => challenge_32(),
+            33 => challenge_33(),
             _ => () 
         }
     }
