@@ -224,6 +224,12 @@ mod challenge {
         let res = data.maximum_pressure();
         println!("{}", res);
     }
+
+    fn challenge_32() {
+        let data = io::input_as_network(16);
+        let res = data.maximum_pressure_dual();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -258,6 +264,7 @@ mod challenge {
             29 => challenge_29(),
             30 => challenge_30(),
             31 => challenge_31(),
+            32 => challenge_32(),
             _ => () 
         }
     }
