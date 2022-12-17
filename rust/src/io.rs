@@ -16,6 +16,7 @@ use crate::heights;
 use crate::packets;
 use crate::sand;
 use crate::sensors;
+use crate::pressure;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -69,6 +70,10 @@ pub fn input_as_code(day : i8) -> crt::CPU {
 
 pub fn input_as_sensors(day : i8) -> sensors::Sensors {
     sensors::Sensors::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_network(day : i8) -> pressure::Network {
+    pressure::Network::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_packet_pairs(day : i8) -> Vec<packets::PacketPair> {

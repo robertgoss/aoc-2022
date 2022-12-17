@@ -21,6 +21,7 @@ mod heights;
 mod packets;
 mod sand;
 mod sensors;
+mod pressure;
 
 mod challenge {
     use crate::packets::Packet;
@@ -215,7 +216,13 @@ mod challenge {
         let data = io::input_as_sensors(15);
         let pt = data.find_beacon(0, 4000000, 0, 4000000).unwrap();
         let res = pt.0 * 4000000 + pt.1;
-        println!("{:?}", res);
+        println!("{}", res);
+    }
+
+    fn challenge_31() {
+        let data = io::input_as_network(16);
+        let res = data.maximum_pressure();
+        println!("{}", res);
     }
    
     pub fn challenge(num : u8) {
@@ -250,6 +257,7 @@ mod challenge {
             28 => challenge_28(),
             29 => challenge_29(),
             30 => challenge_30(),
+            31 => challenge_31(),
             _ => () 
         }
     }
