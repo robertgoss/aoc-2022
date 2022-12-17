@@ -23,6 +23,7 @@ mod sand;
 mod sensors;
 mod pressure;
 mod tetris;
+mod lava;
 
 mod challenge {
     use crate::packets::Packet;
@@ -247,6 +248,18 @@ mod challenge {
         let res = game.simulate_cycle(&mut data);
         println!("{}", res);
     }
+
+    fn challenge_35() {
+        let data = io::input_as_lava(18);
+        let res = data.surface_area();
+        println!("{}", res);
+    }
+
+    fn challenge_36() {
+        let data = io::input_as_lava(18);
+        let res = data.outside_surface_area();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -284,6 +297,8 @@ mod challenge {
             32 => challenge_32(),
             33 => challenge_33(),
             34 => challenge_34(),
+            35 => challenge_35(),
+            36 => challenge_36(),
             _ => () 
         }
     }

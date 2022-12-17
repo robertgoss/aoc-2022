@@ -90,6 +90,7 @@ impl Game {
                 return i;
             }
             self.simulate_shape(&shape, jets);
+            self.print();
         };
         0
     }

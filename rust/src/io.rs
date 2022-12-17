@@ -17,6 +17,7 @@ use crate::packets;
 use crate::sand;
 use crate::sensors;
 use crate::pressure;
+use crate::lava;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -70,6 +71,10 @@ pub fn input_as_code(day : i8) -> crt::CPU {
 
 pub fn input_as_jets(day : i8) -> tetris::Jets {
     tetris::Jets::from_line(&input_as_line(day))
+}
+
+pub fn input_as_lava(day : i8) -> lava::Droplets {
+    lava::Droplets::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_sensors(day : i8) -> sensors::Sensors {
