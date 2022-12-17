@@ -1,4 +1,4 @@
-use std::cmp::max;
+use std::collections::HashSet;
 
 #[derive(Debug)]
 enum Shape {
@@ -10,7 +10,7 @@ enum Shape {
 }
 
 pub struct Game {
-    heights : [usize; 7]
+    rocks : HashSet<(usize, usize)>
 }
 
 pub struct Jets {
@@ -20,7 +20,9 @@ pub struct Jets {
 
 impl Game {
     pub fn new() -> Game {
-        Game { heights : [0; 7] }
+        Game { rocks : HashSet::from_iter(
+            (0..7).map(|i| (i as usize ,0))
+        ) }
     }
 
     pub fn simulate(&mut self, count : usize, jets : &mut Jets) {
@@ -71,29 +73,61 @@ impl Game {
                 fall = true;
             }
         }
-        self.add_heights(shape, x, y);
-        println!("Heights now {:?}", self.heights);
+        self.add_shape(shape, x, y);
+        //self.print();
+    }
+
+    pub fn simulate_cycle(&mut self, jets : &mut Jets) -> usize {
+        let shapes = [
+            Shape::Horizontal,
+            Shape::Cross,
+            Shape::Corner,
+            Shape::Vertical,
+            Shape::Square
+        ];
+        for (i, shape) in shapes.iter().cycle().enumerate() {
+            if i > 0 && self.flat_top() {
+                return i;
+            }
+            self.simulate_shape(&shape, jets);
+        };
+        0
     }
 
     pub fn height(&self) -> usize {
-        *self.heights.iter().max().unwrap_or(&0)
+        *self.rocks.iter().map(
+            |(_,y)| y
+        ).max().unwrap_or(&0)
     }
 
-    fn add_heights(&mut self, shape : &Shape, x :usize , y : usize) {
-        for local_x in 0..shape.width() {
-            let new_y = shape.y_over(local_x) + y - 1;
-            self.heights[x+local_x] = max(self.heights[x+local_x], new_y);
+    fn flat_top(&self) -> bool {
+        let y = self.height();
+        (0..7).all(
+            |x| self.rocks.contains(&(x, y))
+        )
+    }
+
+    fn add_shape(&mut self, shape : &Shape, x :usize , y : usize) {
+        println!("Adding at {} {}", x, y);
+        for (pt_x, pt_y) in shape.points() {
+            self.rocks.insert((pt_x + x, pt_y + y));
         }
     }
 
     fn collide(&self, shape : &Shape, x :usize , y : usize) -> bool {
-        (0..shape.width()).any(
-            |local_x| {
-                let block_y = shape.y_under(local_x) + y;
-                let game_y =  self.heights[x+local_x];
-                block_y <= game_y
-            }
+        shape.points().into_iter().any(
+            |(pt_x, pt_y)| self.rocks.contains(&(pt_x+x, pt_y+y))
         )
+    }
+
+    fn print(&self) {
+        for i in (0..=self.height()).rev() {
+            let line : String = (0..7).map(
+                |j| if self.rocks.contains(&(j, i)) {'#'} else {'.'} 
+            ).collect();
+            println!("|{}|", line);
+        }
+        println!("{:?}", self.rocks);
     }
 }
 
@@ -127,26 +161,13 @@ impl Shape {
         }
     }
 
-    fn y_under(&self, local_x : usize) -> usize {
+    fn points(&self) -> Vec<(usize, usize)> {
         match self {
-            Shape::Cross => {
-                if local_x == 1 {0} else {1}
-            },
-            _ => 0
-        }
-    }
-
-    fn y_over(&self, local_x : usize) -> usize {
-        match self {
-            Shape::Horizontal => 1,
-            Shape::Square => 2,
-            Shape::Vertical => 4,
-            Shape::Corner => {
-                if local_x == 2 {3} else {1}
-            },
-            Shape::Cross => {
-                if local_x == 1 {3} else {2}
-            }
+            Shape::Horizontal => vec!((0,0), (1,0), (2,0), (3,0)),
+            Shape::Square => vec!((0,0), (1,0), (0,1), (1,1)),
+            Shape::Vertical => vec!((0,0), (0,1), (0,2), (0,3)),
+            Shape::Corner => vec!((0,0), (1,0), (2,0), (2,1), (2,2)),
+            Shape::Cross => vec!((1,0), (0,1), (2,1), (1,2), (1,1)),
         }
     }
 }
