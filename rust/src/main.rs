@@ -1,5 +1,7 @@
 #![feature(iter_array_chunks)]
 #![feature(btree_drain_filter)]
+#![feature(hash_drain_filter)]
+#![feature(option_result_contains)]
 
 extern crate pest;
 #[macro_use]
@@ -245,7 +247,7 @@ mod challenge {
     fn challenge_34() {
         let mut data = io::input_as_jets(17);
         let mut game = Game::new();
-        let res = game.simulate_cycle(&mut data);
+        let res = game.simulate_long(2022, &mut data);
         println!("{}", res);
     }
 

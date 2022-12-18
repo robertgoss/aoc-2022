@@ -1,6 +1,7 @@
-use std::collections::HashSet;
+use std::collections::{HashSet, HashMap};
+use std::cmp::max;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 enum Shape {
     Horizontal,
     Cross,
@@ -10,7 +11,9 @@ enum Shape {
 }
 
 pub struct Game {
-    rocks : HashSet<(usize, usize)>
+    rocks : HashSet<(usize, usize)>,
+    heights : [usize; 7],
+    min_height : usize
 }
 
 pub struct Jets {
@@ -20,9 +23,13 @@ pub struct Jets {
 
 impl Game {
     pub fn new() -> Game {
-        Game { rocks : HashSet::from_iter(
-            (0..7).map(|i| (i as usize ,0))
-        ) }
+        Game { 
+            rocks : HashSet::from_iter(
+              (0..7).map(|i| (i as usize ,0))
+            ),
+            heights : [0; 7],
+            min_height : 0
+        }
     }
 
     pub fn simulate(&mut self, count : usize, jets : &mut Jets) {
@@ -39,7 +46,6 @@ impl Game {
     }
 
     fn simulate_shape(&mut self, shape : &Shape, jets : &mut Jets) {
-        println!("Simulating {:?}", shape);
         let mut y = self.height() + 4;
         let mut x : usize = 2;
         let mut fall = false;
@@ -77,7 +83,20 @@ impl Game {
         //self.print();
     }
 
-    pub fn simulate_cycle(&mut self, jets : &mut Jets) -> usize {
+    pub fn simulate_long(&mut self, long_count : usize, jets : &mut Jets) -> usize {
+        // Simulate till we hit a cycle
+        let (cycle_start, cycle_period, heights_at) = 
+          self.simulate_cycle(jets);
+        assert!(long_count > cycle_period);
+        // Work out how many cycles and what remainder we need
+        let cycle_num = (long_count - cycle_start) / cycle_period;
+        let cycle_rem = (long_count - cycle_start) % cycle_period;
+        let delta_height = heights_at[cycle_start + cycle_period] - heights_at[cycle_start];
+        let cycle_hieght = (cycle_num-1) * delta_height;
+        heights_at[cycle_start + cycle_period + cycle_rem] + cycle_hieght
+    }
+
+    fn simulate_cycle(&mut self, jets : &mut Jets) -> (usize, usize, Vec<usize>) {
         let shapes = [
             Shape::Horizontal,
             Shape::Cross,
@@ -85,33 +104,47 @@ impl Game {
             Shape::Vertical,
             Shape::Square
         ];
+        let mut heights = Vec::new();
+        let mut top_repeat : HashMap<(Shape, [usize; 7], usize), usize> = HashMap::new();
+        let mut goal = None;
+        let mut cycle_start = 0;
+        let mut cycle_period = 0;
         for (i, shape) in shapes.iter().cycle().enumerate() {
-            if i > 0 && self.flat_top() {
-                return i;
+            heights.push(self.height());
+            if goal.contains(&i) {
+                break;
+            }
+            if goal.is_none() {
+                if let Some(prev) = top_repeat.get(&(*shape, self.heights, jets.index)) {
+                    cycle_start = *prev;
+                    cycle_period = i - *prev;
+                    goal = Some(i + cycle_period);
+                }
+                top_repeat.insert((*shape, self.heights, jets.index), i);
             }
             self.simulate_shape(&shape, jets);
-            self.print();
         };
-        0
+        (cycle_start, cycle_period, heights)
     }
 
     pub fn height(&self) -> usize {
-        *self.rocks.iter().map(
-            |(_,y)| y
-        ).max().unwrap_or(&0)
-    }
-
-    fn flat_top(&self) -> bool {
-        let y = self.height();
-        (0..7).all(
-            |x| self.rocks.contains(&(x, y))
-        )
+        *self.heights.iter().max().unwrap_or(&0) + self.min_height
     }
 
     fn add_shape(&mut self, shape : &Shape, x :usize , y : usize) {
-        println!("Adding at {} {}", x, y);
         for (pt_x, pt_y) in shape.points() {
             self.rocks.insert((pt_x + x, pt_y + y));
+            self.heights[pt_x + x] = max(self.heights[pt_x+x], pt_y+y - self.min_height);
+        }
+        let new_min = *self.heights.iter().min().unwrap_or(&0);
+        if new_min != 0 {
+            self.min_height += new_min;
+            self.heights.iter_mut().for_each(
+                |h| *h -= new_min
+            );
+            self.rocks.drain_filter(
+                |(_, y)| *y < new_min
+            );
         }
     }
 
@@ -119,16 +152,6 @@ impl Game {
         shape.points().into_iter().any(
             |(pt_x, pt_y)| self.rocks.contains(&(pt_x+x, pt_y+y))
         )
-    }
-
-    fn print(&self) {
-        for i in (0..=self.height()).rev() {
-            let line : String = (0..7).map(
-                |j| if self.rocks.contains(&(j, i)) {'#'} else {'.'} 
-            ).collect();
-            println!("|{}|", line);
-        }
-        println!("{:?}", self.rocks);
     }
 }
 
