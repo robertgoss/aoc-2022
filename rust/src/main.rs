@@ -26,6 +26,7 @@ mod sensors;
 mod pressure;
 mod tetris;
 mod lava;
+mod robot;
 
 mod challenge {
     use crate::packets::Packet;
@@ -262,6 +263,14 @@ mod challenge {
         let res = data.outside_surface_area();
         println!("{}", res);
     }
+
+    fn challenge_37() {
+        let data = io::input_as_blueprints(19);
+        let res : usize = data.iter().enumerate().map(
+            |(i, bp)|(i+1) * bp.max_geodes(26)
+        ).sum();
+        println!("{}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -301,6 +310,7 @@ mod challenge {
             34 => challenge_34(),
             35 => challenge_35(),
             36 => challenge_36(),
+            37 => challenge_37(),
             _ => () 
         }
     }

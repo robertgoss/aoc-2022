@@ -18,6 +18,7 @@ use crate::sand;
 use crate::sensors;
 use crate::pressure;
 use crate::lava;
+use crate::robot;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -121,6 +122,12 @@ pub fn input_as_groups(day: i8) -> Vec<packing::Group> {
 pub fn input_as_assignment(day: i8) -> Vec<camp::AssignmentPair> {
     input_as_lines(day).iter().filter_map(
         |line| camp::AssignmentPair::from_line(line)
+    ).collect()
+}
+
+pub fn input_as_blueprints(day: i8) -> Vec<robot::Blueprint> {
+    input_as_lines(day).iter().filter_map(
+        |line| robot::Blueprint::from_line(line)
     ).collect()
 }
 
