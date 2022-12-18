@@ -247,7 +247,7 @@ mod challenge {
     fn challenge_34() {
         let mut data = io::input_as_jets(17);
         let mut game = Game::new();
-        let res = game.simulate_long(2022, &mut data);
+        let res = game.simulate_long(1000000000000, &mut data);
         println!("{}", res);
     }
 

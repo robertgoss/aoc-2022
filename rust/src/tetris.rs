@@ -11,9 +11,7 @@ enum Shape {
 }
 
 pub struct Game {
-    rocks : HashSet<(usize, usize)>,
-    heights : [usize; 7],
-    min_height : usize
+    rocks : HashSet<(usize, usize)>
 }
 
 pub struct Jets {
@@ -26,9 +24,7 @@ impl Game {
         Game { 
             rocks : HashSet::from_iter(
               (0..7).map(|i| (i as usize ,0))
-            ),
-            heights : [0; 7],
-            min_height : 0
+            )
         }
     }
 
@@ -115,12 +111,13 @@ impl Game {
                 break;
             }
             if goal.is_none() {
-                if let Some(prev) = top_repeat.get(&(*shape, self.heights, jets.index)) {
+                let profile = self.profile();
+                if let Some(prev) = top_repeat.get(&(*shape, profile, jets.index)) {
                     cycle_start = *prev;
                     cycle_period = i - *prev;
                     goal = Some(i + cycle_period);
                 }
-                top_repeat.insert((*shape, self.heights, jets.index), i);
+                top_repeat.insert((*shape, profile, jets.index), i);
             }
             self.simulate_shape(&shape, jets);
         };
@@ -128,24 +125,30 @@ impl Game {
     }
 
     pub fn height(&self) -> usize {
-        *self.heights.iter().max().unwrap_or(&0) + self.min_height
+        *self.rocks.iter().map(|(_,y)| y).max().unwrap_or(&0)
     }
 
     fn add_shape(&mut self, shape : &Shape, x :usize , y : usize) {
         for (pt_x, pt_y) in shape.points() {
             self.rocks.insert((pt_x + x, pt_y + y));
-            self.heights[pt_x + x] = max(self.heights[pt_x+x], pt_y+y - self.min_height);
         }
-        let new_min = *self.heights.iter().min().unwrap_or(&0);
-        if new_min != 0 {
-            self.min_height += new_min;
-            self.heights.iter_mut().for_each(
-                |h| *h -= new_min
-            );
-            self.rocks.drain_filter(
-                |(_, y)| *y < new_min
-            );
+    }
+
+    fn heights(&self) -> [usize; 7] {
+        let mut hs = [0; 7];
+        for (x,y) in self.rocks.iter() {
+            hs[*x] = max(hs[*x], *y);
         }
+        hs
+    }
+
+    fn profile(&self) -> [usize; 7] {
+        let mut hs = self.heights();
+        let base = *hs.iter().min().unwrap();
+        hs.iter_mut().for_each(
+            |h| *h -= base
+        );
+        hs
     }
 
     fn collide(&self, shape : &Shape, x :usize , y : usize) -> bool {
