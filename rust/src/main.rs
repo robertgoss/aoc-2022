@@ -27,6 +27,7 @@ mod pressure;
 mod tetris;
 mod lava;
 mod robot;
+mod riddle;
 
 mod challenge {
     use crate::packets::Packet;
@@ -271,6 +272,19 @@ mod challenge {
         ).sum();
         println!("{}", res);
     }
+
+    fn challenge_41() {
+        let data = io::input_as_riddles(21);
+        let res = data.solve("root").unwrap();
+        println!("{}", res);
+    }
+
+    fn challenge_42() {
+        let data = io::input_as_riddles(21);
+        let poly = data.root_eqn("humn");
+        let res = poly.solve();
+        println!("{:?}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -311,6 +325,8 @@ mod challenge {
             35 => challenge_35(),
             36 => challenge_36(),
             37 => challenge_37(),
+            41 => challenge_41(),
+            42 => challenge_42(),
             _ => () 
         }
     }

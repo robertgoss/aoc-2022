@@ -2,7 +2,7 @@ use std::fs::{read_to_string, File};
 use std::io::BufReader;
 use std::io::BufRead;
 
-use crate::{calories, tetris};
+use crate::{calories, tetris, riddle};
 use crate::game;
 use crate::packing;
 use crate::camp;
@@ -129,6 +129,10 @@ pub fn input_as_blueprints(day: i8) -> Vec<robot::Blueprint> {
     input_as_lines(day).iter().filter_map(
         |line| robot::Blueprint::from_line(line)
     ).collect()
+}
+
+pub fn input_as_riddles(day: i8) -> riddle::Riddle {
+    riddle::Riddle::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_crates(day: i8) -> (crates::Crates, Vec<crates::Move>) {
