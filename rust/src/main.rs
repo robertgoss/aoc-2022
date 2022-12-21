@@ -28,10 +28,12 @@ mod tetris;
 mod lava;
 mod robot;
 mod riddle;
+mod encrypted;
 
 mod challenge {
     use crate::packets::Packet;
     use crate::tetris::Game;
+    use crate::encrypted;
 
     use super::io as io;
 
@@ -273,6 +275,20 @@ mod challenge {
         println!("{}", res);
     }
 
+    fn challenge_39() {
+        let data = io::input_as_ints(20);
+        let encrypted = encrypted::File::make_file(&data);
+        let res = encrypted.data(1000) + encrypted.data(2000) + encrypted.data(3000);
+        println!("{}", res);
+    }
+
+    fn challenge_40() {
+        let data = io::input_as_ints(20);
+        let encrypted = encrypted::File::make_file_key(&data, 811589153, 10);
+        let res = encrypted.data(1000) + encrypted.data(2000) + encrypted.data(3000);
+        println!("{}", res);
+    }
+
     fn challenge_41() {
         let data = io::input_as_riddles(21);
         let res = data.solve("root").unwrap();
@@ -325,6 +341,8 @@ mod challenge {
             35 => challenge_35(),
             36 => challenge_36(),
             37 => challenge_37(),
+            39 => challenge_39(),
+            40 => challenge_40(),
             41 => challenge_41(),
             42 => challenge_42(),
             _ => () 
