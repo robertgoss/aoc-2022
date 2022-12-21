@@ -20,6 +20,7 @@ use crate::pressure;
 use crate::lava;
 use crate::robot;
 use crate::map;
+use crate::planting;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -59,6 +60,10 @@ pub fn input_as_game(day: i8) -> game::Game {
 
 pub fn input_as_forest(day: i8) -> trees::Forest {
     trees::Forest::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_field(day: i8) -> planting::Field {
+    planting::Field::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_commands(day : i8) -> files::Commands {

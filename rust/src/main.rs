@@ -31,6 +31,7 @@ mod robot;
 mod riddle;
 mod encrypted;
 mod map;
+mod planting;
 
 mod challenge {
     use crate::packets::Packet;
@@ -309,6 +310,19 @@ mod challenge {
         let res = data.simulate().val();
         println!("{:?}", res);
     }
+
+    fn challenge_45() {
+        let mut data = io::input_as_field(23);
+        data.simulate(10);
+        let res = data.empty_ground();
+        println!("{:?}", res);
+    }
+
+    fn challenge_46() {
+        let mut data = io::input_as_field(23);
+        let res = data.simulate_till_still();
+        println!("{:?}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -354,6 +368,8 @@ mod challenge {
             41 => challenge_41(),
             42 => challenge_42(),
             43 => challenge_43(),
+            45 => challenge_45(),
+            46 => challenge_46(),
             _ => () 
         }
     }
