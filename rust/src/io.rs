@@ -19,6 +19,7 @@ use crate::sensors;
 use crate::pressure;
 use crate::lava;
 use crate::robot;
+use crate::map;
 
 pub fn input_as_lines(day: i8) -> Vec<String> {
     let filename = format!("../data/day-{}.txt", day);
@@ -86,6 +87,10 @@ pub fn input_as_lava(day : i8) -> lava::Droplets {
 
 pub fn input_as_sensors(day : i8) -> sensors::Sensors {
     sensors::Sensors::from_lines(&input_as_lines(day))
+}
+
+pub fn input_as_map(day : i8) -> map::Map {
+    map::Map::from_lines(&input_as_lines(day))
 }
 
 pub fn input_as_network(day : i8) -> pressure::Network {

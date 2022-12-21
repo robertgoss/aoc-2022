@@ -2,6 +2,7 @@
 #![feature(btree_drain_filter)]
 #![feature(hash_drain_filter)]
 #![feature(option_result_contains)]
+#![feature(iter_advance_by)]
 
 extern crate pest;
 #[macro_use]
@@ -29,6 +30,7 @@ mod lava;
 mod robot;
 mod riddle;
 mod encrypted;
+mod map;
 
 mod challenge {
     use crate::packets::Packet;
@@ -301,6 +303,12 @@ mod challenge {
         let res = poly.solve();
         println!("{:?}", res);
     }
+
+    fn challenge_43() {
+        let data = io::input_as_map(22);
+        let res = data.simulate().val();
+        println!("{:?}", res);
+    }
    
     pub fn challenge(num : u8) {
         match num {
@@ -345,6 +353,7 @@ mod challenge {
             40 => challenge_40(),
             41 => challenge_41(),
             42 => challenge_42(),
+            43 => challenge_43(),
             _ => () 
         }
     }
